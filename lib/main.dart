@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'models/memo_data.dart';
 
 void main() {
   runApp(const MyApp());
@@ -25,7 +26,12 @@ class MyMemoAppPage extends StatefulWidget {
 }
 
 class _MyMemoAppPageState extends State<MyMemoAppPage> {
-  List<String> items = ['a', 'b', 'c'];
+  List<MemoData> items = [
+    MemoData(content: 'Memo 1', createAt: DateTime(2022, 12, 31)),
+    MemoData(content: 'Memo 2', createAt: DateTime(2023, 07, 31)),
+    MemoData(content: 'Memo 3', createAt: DateTime(2024, 01, 31)),
+    MemoData(content: 'Memo 4', createAt: DateTime(2024, 08, 07))
+  ];
 
   @override
   void initState() {
@@ -51,30 +57,67 @@ class _MyMemoAppPageState extends State<MyMemoAppPage> {
           IconButton(
             onPressed: () {
               setState(() {
-                items.add('new item');
+                items.add(
+                    MemoData(content: "New Memo", createAt: DateTime.now()));
               });
             },
             icon: Icon(Icons.create),
           ),
         ],
       ),
-      body: ListView.builder(
-        itemCount: items.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(items[index]),
-            tileColor: Colors.amber[100],
-            trailing: IconButton(
-              onPressed: () {
-                setState(() {
-                  items.removeAt(index);
-                });
-              },
-              icon: Icon(Icons.delete),
-            ),
-          );
-        },
+      body: Column(
+        children: [
+          CustomListView(
+            items: items,
+            onDelete: (index) {
+              setState(() {
+                items.removeAt(index);
+              });
+            },
+          ),
+          CustomListView(
+            items: items,
+            onDelete: (index) {
+              setState(() {
+                items.removeAt(index);
+              });
+            },
+          ),
+        ],
       ),
+    );
+  }
+}
+
+class CustomListView extends StatelessWidget {
+  final List<MemoData> items;
+  final Function(int) onDelete;
+
+  const CustomListView({
+    super.key,
+    required this.items,
+    required this.onDelete,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+      itemCount: items.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Text(items[index].content),
+          subtitle: Text('${items[index].createAt}'),
+          tileColor: Colors.amber[100],
+          trailing: IconButton(
+            onPressed: () {
+              onDelete(index);
+            },
+            icon: Icon(Icons.delete),
+          ),
+        );
+      },
     );
   }
 }
