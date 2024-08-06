@@ -65,33 +65,55 @@ class _MyMemoAppPageState extends State<MyMemoAppPage> {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          CustomListView(
-            items: items,
-            onDelete: (index) {
-              setState(() {
-                items.removeAt(index);
-              });
-            },
-          ),
-          CustomListView(
-            items: items,
-            onDelete: (index) {
-              setState(() {
-                items.removeAt(index);
-              });
-            },
-          ),
-        ],
+      body: ListView(
+        children: groupMemoDataByYear(items).entries.map((entry) {
+          return Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.all(10),
+                child: Text(
+                  '${entry.key}',
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              CustomListView(
+                items: entry.value,
+                onDelete: (customItem) {
+                  setState(() {
+                    items.remove(customItem);
+                  });
+                },
+              ),
+            ],
+          );
+        }).toList(),
       ),
     );
+  }
+
+  Map<int, List<MemoData>> groupMemoDataByYear(List<MemoData> items) {
+    Map<int, List<MemoData>> memoByYear = {};
+
+    for (var item in items) {
+      int year = item.createAt.year;
+
+      if (!memoByYear.containsKey(year)) {
+        memoByYear[year] = [];
+      }
+
+      memoByYear[year]?.add(item);
+    }
+
+    return memoByYear;
   }
 }
 
 class CustomListView extends StatelessWidget {
   final List<MemoData> items;
-  final Function(int) onDelete;
+  final Function(MemoData) onDelete;
 
   const CustomListView({
     super.key,
@@ -106,13 +128,15 @@ class CustomListView extends StatelessWidget {
       physics: NeverScrollableScrollPhysics(),
       itemCount: items.length,
       itemBuilder: (context, index) {
+        var custonItem = items[index];
+
         return ListTile(
           title: Text(items[index].content),
           subtitle: Text('${items[index].createAt}'),
           tileColor: Colors.amber[100],
           trailing: IconButton(
             onPressed: () {
-              onDelete(index);
+              onDelete(custonItem);
             },
             icon: Icon(Icons.delete),
           ),
