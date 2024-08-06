@@ -10,37 +10,70 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    List<String> items = ['a', 'b', 'c'];
     return MaterialApp(
       title: 'Flutter Demo',
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Memo'),
-          backgroundColor: Colors.amber,
-          actions: [
-            IconButton(
-              onPressed: () {
+      home: MyMemoAppPage(),
+    );
+  }
+}
+
+class MyMemoAppPage extends StatefulWidget {
+  const MyMemoAppPage({super.key});
+
+  @override
+  State<MyMemoAppPage> createState() => _MyMemoAppPageState();
+}
+
+class _MyMemoAppPageState extends State<MyMemoAppPage> {
+  List<String> items = ['a', 'b', 'c'];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print('initState');
+  }
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    print('didChangeDependencies');
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Memo'),
+        backgroundColor: Colors.amber,
+        actions: [
+          IconButton(
+            onPressed: () {
+              setState(() {
                 items.add('new item');
-              },
-              icon: Icon(Icons.create),
-            ),
-          ],
-        ),
-        body: ListView.builder(
-          itemCount: items.length,
-          itemBuilder: (context, index) {
-            return ListTile(
-              title: Text(items[index]),
-              tileColor: Colors.amber[100],
-              trailing: IconButton(
-                onPressed: () {
+              });
+            },
+            icon: Icon(Icons.create),
+          ),
+        ],
+      ),
+      body: ListView.builder(
+        itemCount: items.length,
+        itemBuilder: (context, index) {
+          return ListTile(
+            title: Text(items[index]),
+            tileColor: Colors.amber[100],
+            trailing: IconButton(
+              onPressed: () {
+                setState(() {
                   items.removeAt(index);
-                },
-                icon: Icon(Icons.delete),
-              ),
-            );
-          },
-        ),
+                });
+              },
+              icon: Icon(Icons.delete),
+            ),
+          );
+        },
       ),
     );
   }
