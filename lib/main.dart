@@ -10,6 +10,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    List<String> items = ['a', 'b', 'c'];
     return MaterialApp(
       title: 'Flutter Demo',
       home: Scaffold(
@@ -18,20 +19,22 @@ class MyApp extends StatelessWidget {
           backgroundColor: Colors.amber,
           actions: [
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                items.add('new item');
+              },
               icon: Icon(Icons.create),
             ),
           ],
         ),
         body: ListView.builder(
-          itemCount: 10,
+          itemCount: items.length,
           itemBuilder: (context, index) {
             return ListTile(
-              title: Text('아이템 $index'),
+              title: Text(items[index]),
               tileColor: Colors.amber[100],
               trailing: IconButton(
                 onPressed: () {
-                  print('삭제: 아이템 $index');
+                  items.removeAt(index);
                 },
                 icon: Icon(Icons.delete),
               ),
