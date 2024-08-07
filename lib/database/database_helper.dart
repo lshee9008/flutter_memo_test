@@ -30,7 +30,9 @@ class DatabaseHelper {
 
     return List.generate(maps.length, (index) {
       return MemoData(
-          id: maps[index]['id'],
+          id: maps[index][
+              'id'], //설명 하자면은 maps가 List<Map<String, dynamic>> 의 자료형이므로 여기서 index는 List의 index값이 되는 거고
+          // 'id'는 Map 자료형의 String이 된다 이렇게 검색한 데이터는 content (String) 혹은 createAt (DateTime))이 될수 있으니 Dynamic으로 구현
           content: maps[index]['content'],
           createAt: DateTime.parse(maps[index]['createAt']));
     });
