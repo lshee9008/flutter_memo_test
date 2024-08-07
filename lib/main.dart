@@ -120,7 +120,6 @@ class CustomListView extends StatelessWidget {
     required this.items,
     required this.onDelete,
   });
-
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
