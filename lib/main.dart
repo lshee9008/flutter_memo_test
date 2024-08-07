@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'models/memo_data.dart';
+import 'screen/memo_input_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -34,20 +35,6 @@ class _MyMemoAppPageState extends State<MyMemoAppPage> {
   ];
 
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    print('initState');
-  }
-
-  @override
-  void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
-    super.didChangeDependencies();
-    print('didChangeDependencies');
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -56,9 +43,15 @@ class _MyMemoAppPageState extends State<MyMemoAppPage> {
         actions: [
           IconButton(
             onPressed: () {
-              setState(() {
-                items.add(
-                    MemoData(content: "New Memo", createAt: DateTime.now()));
+              Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => MemoInputPage()))
+                  .then((value) {
+                if (!value.isEmpty) {
+                  setState(() {
+                    items.add(
+                        MemoData(content: value, createAt: DateTime.now()));
+                  });
+                }
               });
             },
             icon: Icon(Icons.create),
