@@ -72,7 +72,7 @@ class _MyMemoAppPageState extends State<MyMemoAppPage> {
               Padding(
                 padding: EdgeInsets.all(10),
                 child: Text(
-                  '${entry.key}',
+                  '${entry.key}', //날짜
                   style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.bold,
@@ -104,7 +104,9 @@ class _MyMemoAppPageState extends State<MyMemoAppPage> {
         memoByYear[year] = [];
       }
 
-      memoByYear[year]?.add(item);
+      memoByYear[year]?.add(
+          item); // [year, MemoData(content: '~~~~~', createAt: DateTime(----, --, --))]
+      // Map<int, List<MemoData>>
     }
 
     return memoByYear;
