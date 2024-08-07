@@ -32,7 +32,7 @@ class _MemoInputPageState extends State<MemoInputPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Memo'),
+        title: Text('Add Memo '),
       ),
       body: Padding(
         padding: EdgeInsets.all(20),
