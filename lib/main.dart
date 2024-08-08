@@ -53,8 +53,9 @@ class _MyMemoAppPageState extends State<MyMemoAppPage> {
                         builder: (context) => MemoInputPage())).then((value) {
                   if (!value.isEmpty) {
                     setState(() {
-                      // items.add(
-                      //     MemoData(content: value, createAt: DateTime.now()));
+                      dbHelper.insertMemo(
+                          MemoData(content: value, createAt: DateTime.now()));
+                      memos = dbHelper.getMemos();
                     });
                   }
                 });
@@ -84,9 +85,16 @@ class _MyMemoAppPageState extends State<MyMemoAppPage> {
                       ),
                       CustomListView(
                         items: entry.value,
-                        onDelete: (customItem) {
+                        onDelete: (customId) {
                           setState(() {
-                            items.remove(customItem);
+                            dbHelper.deleteMemo(customId);
+                            memos = dbHelper.getMemos();
+                          });
+                        },
+                        onUpdate: (customMemo) {
+                          setState(() {
+                            dbHelper.updateMemo(customMemo);
+                            memos = dbHelper.getMemos();
                           });
                         },
                       ),
@@ -118,12 +126,14 @@ class _MyMemoAppPageState extends State<MyMemoAppPage> {
 
 class CustomListView extends StatelessWidget {
   final List<MemoData> items;
-  final Function(MemoData) onDelete;
+  final Function(int) onDelete;
+  final Function(MemoData) onUpdate;
 
   const CustomListView({
     super.key,
     required this.items,
     required this.onDelete,
+    required this.onUpdate,
   });
   @override
   Widget build(BuildContext context) {
@@ -140,10 +150,25 @@ class CustomListView extends StatelessWidget {
           tileColor: Colors.amber[100],
           trailing: IconButton(
             onPressed: () {
-              onDelete(custonItem);
+              onDelete(items[index].id!);
             },
             icon: Icon(Icons.delete),
           ),
+          onTap: () {
+            Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            MemoInputPage(initContent: items[index].content)))
+                .then((value) {
+              if (items[index].content != value) {
+                onUpdate(MemoData(
+                    id: items[index].id,
+                    content: value,
+                    createAt: items[index].createAt));
+              }
+            });
+          },
         );
       },
     );

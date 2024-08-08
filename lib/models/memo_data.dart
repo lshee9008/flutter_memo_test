@@ -10,4 +10,12 @@ class MemoData {
     // TODO: implement toString
     return 'content : $content, createAt : $createAt';
   }
+
+  Map<String, Object?> toMap() {
+    return {
+      'id': id,
+      'content': content,
+      'createAt': createAt.toIso8601String()
+    };
+  }
 }

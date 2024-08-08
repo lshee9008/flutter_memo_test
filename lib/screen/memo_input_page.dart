@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class MemoInputPage extends StatefulWidget {
-  const MemoInputPage({super.key});
+  final String? initContent;
+  const MemoInputPage({super.key, this.initContent});
 
   @override
   State<MemoInputPage> createState() => _MemoInputPageState();
@@ -16,7 +17,7 @@ class _MemoInputPageState extends State<MemoInputPage> {
 
     // TODO: implement initState
     super.initState();
-    textController = TextEditingController();
+    textController = TextEditingController(text: widget.initContent);
   }
 
   @override

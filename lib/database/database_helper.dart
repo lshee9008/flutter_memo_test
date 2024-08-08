@@ -37,4 +37,20 @@ class DatabaseHelper {
           createAt: DateTime.parse(maps[index]['createAt']));
     });
   }
+
+  Future<void> insertMemo(MemoData memo) async {
+    await initDatabase();
+    await _database!.insert('memos', memo.toMap());
+  }
+
+  Future<void> deleteMemo(int id) async {
+    await initDatabase();
+    await _database!.delete('memos', where: 'id = ?', whereArgs: [id]);
+  }
+
+  Future<void> updateMemo(MemoData memo) async {
+    await initDatabase();
+    await _database!
+        .update('memos', memo.toMap(), where: 'id = ?', whereArgs: [memo.id]);
+  }
 }
